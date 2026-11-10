@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Continuidad Digital UMSA: modelo académico de asignación financiera para servicios tecnológicos universitarios.">
+  <title>Continuidad Digital UMSA | Asignación financiera</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Inicio">
+      <span class="brand-mark">CD</span>
+      <span>Continuidad Digital UMSA <small>Modelo de asignación financiera</small></span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <a href="#contexto">Contexto</a>
+      <a href="#modelo">Modelo</a>
+      <a href="#simulador">Simulador</a>
+      <a href="#qa">Pruebas QA</a>
+      <a href="#fuentes">Fuentes</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <p class="eyebrow">MÉTODOS NUMÉRICOS · INGENIERÍA DE SISTEMAS</p>
+        <h1>Continuidad Digital UMSA</h1>
+        <p class="hero-subtitle">Modelo de asignación financiera para servicios tecnológicos</p>
+        <p class="lead">Los servicios universitarios dependen de redes, energía y sistemas administrativos. Este modelo estudia cómo priorizar recursos para sostenerlos cuando el presupuesto es limitado y las iniciativas comparten dependencias.</p>
+        <a class="button button-light" href="#simulador">Abrir simulador <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-stat" aria-label="Infraestructura institucional de referencia">
+        <div class="stat-number">24</div>
+        <div class="stat-label">predios universitarios conectados</div>
+        <div class="stat-rule"></div>
+        <div class="stat-foot">45 km de fibra óptica · más de 4.400 puntos de red</div>
+        <a href="https://www.umsa.bo/es/web/dtic/servicios" target="_blank" rel="noopener">Referencia pública del DTIC ↗</a>
+      </div>
+    </section>
+
+    <section class="student-strip" aria-label="Datos académicos del estudiante">
+      <div><span>ESTUDIANTE</span><strong>Jimmy Brandon Quispe Mollisaca</strong></div>
+      <div><span>CARRERA</span><strong>Informática · UMSA</strong></div>
+      <div><span>MENCIÓN</span><strong>Ingeniería de Sistemas</strong></div>
+      <div><span>ASIGNATURA</span><strong>Métodos Numéricos</strong></div>
+    </section>
+
+    <div class="notice notice-info" role="note">
+      <strong>Alcance del proyecto.</strong> Este es un ejercicio académico independiente, no un sistema oficial de la UMSA. La página muestra únicamente los datos académicos indicados para identificar el trabajo; no solicita información adicional ni guarda las entradas del simulador. Las cifras presupuestarias provienen de una fuente institucional pública. Los escenarios y coeficientes son supuestos didácticos, no presupuestos reales de proyectos del DTIC.
+    </div>
+
+    <section class="problem-intro" aria-labelledby="problemTitle">
+      <div class="problem-intro-main">
+        <p class="eyebrow">EL PROBLEMA FINANCIERO</p>
+        <h2 id="problemTitle">Mantener disponibles los servicios digitales requiere decidir dónde invertir primero.</h2>
+        <p>Una interrupción de conectividad o energía puede afectar varios servicios a la vez. Por eso, las medidas de continuidad compiten por recursos y también se complementan: un enlace alterno ayuda más si hay energía de respaldo, copias recuperables, monitoreo y soporte.</p>
+      </div>
+      <div class="problem-intro-side">
+        <h3>La pregunta del modelo</h3>
+        <p>¿Cómo cambia el ajuste presupuestario estimado para cinco iniciativas cuando el escenario es estable, hay presión financiera o las variables tienen escalas muy distintas?</p>
+        <span class="problem-tag">Caso académico de Ingeniería de Sistemas</span>
+      </div>
+    </section>
+
+    <section class="section" id="contexto">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / CONTEXTO FINANCIERO</p><h2>Una referencia real, con sus límites claros.</h2></div>
+        <p>El PEI de la UMSA publica techos presupuestarios indicativos para 2018–2024 por fuente de financiamiento. Sirven para ubicar la escala institucional; no identifican cuánto se destinó específicamente a tecnología. El simulador usa ese contexto para motivar el caso y plantea sus propios escenarios editables.</p>
+      </div>
+      <div class="grid-two">
+        <article class="card chart-card">
+          <div class="card-title-row"><div><h3>Techos presupuestarios de referencia</h3><p class="muted">Bolivianos corrientes · dato institucional publicado</p></div><span class="tag tag-real">REFERENCIA REAL</span></div>
+          <canvas id="budgetChart" height="260" aria-label="Gráfico de techos presupuestarios de referencia por gestión"></canvas>
+          <div class="legend"><span><i class="dot dot-blue"></i>Subvención TGN</span><span><i class="dot dot-green"></i>Coparticipación tributaria</span><span><i class="dot dot-orange"></i>Coparticipación IDH</span></div>
+        </article>
+        <article class="card">
+          <div class="card-title-row"><div><h3>Composición en 2024</h3><p class="muted">Techo indicativo publicado en el PEI</p></div><span class="tag">2024</span></div>
+          <div class="big-total" id="budgetTotal">Cargando…</div>
+          <p class="muted">Suma de las tres fuentes que aparecen en la tabla del PEI. No equivale a presupuesto ejecutado ni a presupuesto del DTIC.</p>
+          <div class="table-wrap"><table id="budgetTable"><thead><tr><th>Gestión</th><th>TGN</th><th>Tributaria</th><th>IDH</th><th>Total</th></tr></thead><tbody></tbody></table></div>
+          <p class="source-note">Fuente: <a href="https://www.umsa.bo/documents/1811251/2186074/PEI_UMSA_2019-2025_02-03-2020-ajustado.pdf/6f9e84af-82e2-447b-d8f3-54241c585f6d" target="_blank" rel="noopener">PEI UMSA 2021–2025, Cuadro 21</a>. El propio documento describe estas cifras como indicativas.</p>
+        </article>
+      </div>
+      <div class="callout"><strong>Cómo usamos el dato real:</strong> como referencia de contexto y escala. La distribución entre iniciativas digitales que calcula el simulador es una demostración construida con coeficientes editables; no se presenta como una asignación oficial.</div>
+    </section>
+
+    <section class="section section-tint" id="modelo">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 / CASO Y FORMULACIÓN</p><h2>Planificación de continuidad digital.</h2></div>
+        <p>Se estudia cómo las decisiones de inversión se relacionan cuando varios proyectos comparten infraestructura y objetivos institucionales.</p>
+      </div>
+      <div class="grid-two model-grid">
+        <article class="card">
+          <h3>Variables financieras</h3>
+          <p class="muted">Cada xᵢ representa un ajuste presupuestario de demostración, en miles de bolivianos. Un valor negativo se interpreta como una reducción respecto a la línea base del ejercicio.</p>
+          <ol class="variable-list">
+            <li><span>01</span><div><strong>Redundancia de conectividad</strong><small>Enlaces alternos y capacidad de red</small></div></li>
+            <li><span>02</span><div><strong>Respaldo eléctrico</strong><small>UPS y continuidad de equipos de red</small></div></li>
+            <li><span>03</span><div><strong>Copias y recuperación</strong><small>Respaldos y restauración de sistemas</small></div></li>
+            <li><span>04</span><div><strong>Monitoreo de seguridad</strong><small>Detección y respuesta ante incidentes</small></div></li>
+            <li><span>05</span><div><strong>Soporte y continuidad</strong><small>Mantenimiento y atención de fallas</small></div></li>
+          </ol>
+        </article>
+        <article class="card math-card">
+          <h3>Modelo lineal</h3>
+          <div class="equation">Ax = b</div>
+          <p><strong>x</strong> representa ajustes de demostración en miles de bolivianos y <strong>b</strong> fija la meta financiera de cada escenario. La matriz <strong>A</strong> resume el costo relativo y la interacción modelada entre las iniciativas. En términos del modelo cuadrático, resolver Ax = b identifica el punto de equilibrio de ½xᵀAx − bᵀx.</p>
+          <div class="coefficient-guide">
+            <h4>¿Qué representa cada coeficiente?</h4>
+            <ul>
+              <li><strong>aᵢᵢ, diagonal:</strong> peso o rigidez relativa de ajustar la iniciativa i; valores mayores penalizan más ese ajuste dentro del modelo.</li>
+              <li><strong>aᵢⱼ = aⱼᵢ, fuera de la diagonal:</strong> acoplamiento entre las iniciativas i y j. Un cero indica que no se modela una interacción directa; el signo y magnitud indican la dirección e intensidad asumidas.</li>
+              <li><strong>bᵢ:</strong> meta o presión financiera asociada a la iniciativa i. Sus valores y los coeficientes son supuestos académicos, no registros de gasto de la UMSA.</li>
+            </ul>
+            <p class="small muted">Los techos publicados del PEI aportan contexto de escala. No se usan para afirmar que estos coeficientes sean datos observados ni una asignación institucional.</p>
+          </div>
+          <div class="proof-box" aria-live="polite">
+            <strong>Verificación de simetría y definición positiva</strong>
+            <p>Para el escenario activo, se comprueba la simetría con max |aᵢⱼ − aⱼᵢ| y se aplica el criterio de Sylvester: todos los menores principales líderes Δ₁,…,Δₙ deben ser positivos. Estos menores se obtienen de la factorización A = LLᵀ.</p>
+            <div class="proof-grid">
+              <span>Error máximo de simetría</span><strong id="symmetryProof">Calculando…</strong>
+              <span>Menores principales líderes</span><strong id="minorProof">Calculando…</strong>
+              <span>Conclusión</span><strong id="positiveProof">Pendiente</strong>
+            </div>
+          </div>
+          <div class="callout"><strong>Escenario mal condicionado:</strong> se construye como A = D¹ᐟ²CD¹ᐟ², con escalas muy diferentes en D. El precondicionador de Jacobi compensa ese mal escalamiento. En Ideal y Bajo estrés cambian los pesos y acoplamientos manteniendo las mismas cinco iniciativas.</div>
+          <p class="small muted">Las matrices son parte del ejercicio académico y se pueden editar en el simulador.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="simulador">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 / CÁLCULO NUMÉRICO</p><h2>Simulador de Gradientes Conjugados.</h2></div>
+        <p>Elige un escenario o edita sus coeficientes. Los resultados se vuelven a calcular al modificar los datos.</p>
+      </div>
+      <div class="scenario-row" role="group" aria-label="Escenarios">
+        <button class="scenario-button active" data-scenario="ideal"><span class="scenario-index">01</span><strong>Ideal</strong><small>Referencia equilibrada</small></button>
+        <button class="scenario-button" data-scenario="stress"><span class="scenario-index">02</span><strong>Bajo estrés</strong><small>Presión de costos y metas</small></button>
+        <button class="scenario-button" data-scenario="ill"><span class="scenario-index">03</span><strong>Mal condicionado</strong><small>Escalas muy diferentes</small></button>
+      </div>
+      <p id="scenarioDescription" class="scenario-description" aria-live="polite"></p>
+
+      <div class="solver-layout">
+        <article class="card editor-card">
+          <div class="card-title-row"><div><h3>Entrada editable</h3><p class="muted">A simétrica · n = 5 · cifras del modelo demostrativo</p></div><span class="tag">A · b · x₀</span></div>
+          <div class="table-wrap matrix-wrap"><table id="matrixTable" class="matrix-table"><caption>Matriz A</caption><tbody></tbody></table></div>
+          <div class="vector-grid">
+            <div><h4>Vector b</h4><div id="bInputs" class="vector-inputs"></div></div>
+            <div><h4>Vector inicial x₀</h4><div id="x0Inputs" class="vector-inputs"></div></div>
+          </div>
+          <div class="control-grid">
+            <label>Tolerancia relativa<input id="tolerance" type="number" min="0.0000001" max="0.5" step="any" value="0.000001"></label>
+            <label>Máximo de iteraciones<input id="maxIterations" type="number" min="1" max="10000" step="1" value="500"></label>
+            <label>Precondicionador<select id="preconditioner"><option value="jacobi">Jacobi (diagonal)</option><option value="none">Sin precondicionador</option></select></label>
+          </div>
+          <div class="action-row"><button class="button button-primary" id="solveButton">Calcular ahora</button><span id="solveStatus" class="status" aria-live="polite">Preparando escenario…</span></div>
+          <div id="errorBanner" class="notice notice-error hidden" role="alert"></div>
+        </article>
+        <article class="card result-card">
+          <div class="card-title-row"><div><h3>Diagnóstico del escenario</h3><p class="muted">Cholesky · GC · GCP con el precondicionador elegido</p></div><span id="convergenceTag" class="tag tag-wait">PENDIENTE</span></div>
+          <div class="metric-grid">
+            <div class="metric"><span>Iteraciones GC</span><strong id="gcIterations">—</strong></div>
+            <div class="metric"><span>Iteraciones GCP</span><strong id="gcpIterations">—</strong></div>
+            <div class="metric"><span>κ(A)</span><strong id="kappaA">—</strong></div>
+            <div class="metric"><span>κ precondicionada</span><strong id="kappaM">—</strong></div>
+          </div>
+          <div class="residual-line"><span>Residuo relativo final GCP</span><strong id="finalResidual">—</strong></div>
+          <div class="table-wrap"><table id="solutionTable"><thead><tr><th>Variable</th><th>Referencia</th><th>GC</th><th>GCP</th></tr></thead><tbody></tbody></table></div>
+          <div class="chart-header">
+            <div><h4 class="subheading">Convergencia</h4><p class="muted">Residuo relativo por iteración · escala logarítmica</p></div>
+            <span id="chartScenario" class="tag tag-real">IDEAL</span>
+          </div>
+          <div class="convergence-frame"><canvas id="convergenceChart" height="240" aria-label="Gráfico de residuo relativo por iteración para el escenario seleccionado"></canvas></div>
+          <div class="convergence-legend" aria-label="Leyenda del gráfico">
+            <span><i class="chart-key chart-key-gc"></i>GC sin precondicionador</span>
+            <span><i class="chart-key chart-key-gcp"></i>GCP con <span id="chartPreconditioner">Jacobi</span></span>
+            <span><i class="chart-key chart-key-tolerance"></i>Tolerancia</span>
+          </div>
+          <p class="chart-help">El gráfico se actualiza con cada escenario y con los cambios en A, b o la tolerancia. Un descenso más pronunciado indica que el residuo se reduce en menos iteraciones.</p>
+          <p class="source-note">κ(M⁻¹A) se calcula con los autovalores de la matriz simétrica equivalente M⁻¹ᐟ²AM⁻¹ᐟ².</p>
+        </article>
+      </div>
+
+      <article class="card error-card">
+        <div class="card-title-row"><div><h3>Errores por variable</h3><p class="muted">Comparación entre la solución de referencia y GCP</p></div></div>
+        <div class="table-wrap"><table id="errorTable"><thead><tr><th>Variable</th><th>Error absoluto</th><th>Error relativo</th><th>Error porcentual</th></tr></thead><tbody></tbody></table></div>
+      </article>
+      <article class="card error-card">
+        <div class="card-title-row">
+          <div><h3>Comparativa de escenarios</h3><p class="muted">Incluye vectores de solución, errores por variable y diagnósticos de los tres casos.</p></div>
+          <button id="compareScenariosButton" class="button button-secondary">Recalcular los 3 escenarios</button>
+        </div>
+        <p id="comparisonStatus" class="small muted" aria-live="polite">La comparación se completa al ejecutar QA o al pulsar el botón.</p>
+        <div class="table-wrap"><table id="comparisonTable" class="comparison-table"><thead><tr><th>Escenario</th><th>Referencia xref</th><th>Solución GCP</th><th>Error absoluto Ea por variable</th><th>Error porcentual Ep por variable</th><th>Error de simetría</th><th>Menores de Sylvester Δ₁…Δₙ</th><th>Iteraciones GC</th><th>Iteraciones GCP</th><th>κ(A)</th><th>κ(M⁻¹A)</th><th>Residuo relativo GCP</th><th>¿Convergió?</th><th>Interpretación financiera</th></tr></thead><tbody><tr><td colspan="14" class="empty-state">Calculando los escenarios…</td></tr></tbody></table></div>
+      </article>
+    </section>
+
+    <section class="section section-tint" id="qa">
+      <div class="section-heading">
+        <div><p class="eyebrow">04 / CONTROL DE CALIDAD</p><h2>Pruebas funcionales.</h2></div>
+        <div><p>Las verificaciones se ejecutan automáticamente al abrir la página. También puedes repetirlas con el botón; cada prueba registra entrada, resultado esperado, resultado obtenido y conclusión.</p><button id="runQaButton" class="button button-primary">Ejecutar pruebas QA</button></div>
+      </div>
+      <div class="table-wrap card"><table id="qaTable"><thead><tr><th>Prueba</th><th>Entrada</th><th>Esperado</th><th>Obtenido</th><th>Conclusión</th></tr></thead><tbody><tr><td colspan="5" class="empty-state">Ejecutando las pruebas QA automáticamente…</td></tr></tbody></table></div>
+      <p id="qaStatus" class="muted" aria-live="polite"></p>
+    </section>
+
+    <section class="section" id="conclusiones">
+      <div class="section-heading">
+        <div><p class="eyebrow">05 / INTERPRETACIÓN</p><h2>Qué muestran los resultados.</h2></div>
+      </div>
+      <div class="grid-three">
+        <article class="card insight-card"><span class="insight-number">A</span><h3>Precisión</h3><p>Cholesky entrega la referencia directa. Si GCP alcanza la tolerancia de 10⁻⁶ y el residuo relativo es pequeño, su solución satisface bien el sistema. Los errores por variable muestran dónde queda la diferencia más visible.</p></article>
+        <article class="card insight-card"><span class="insight-number">B</span><h3>Condicionamiento y velocidad</h3><p>Un κ(A) alto indica mayor sensibilidad numérica. Comparar κ(A) con κ(M⁻¹A) y las iteraciones de GC/GCP muestra si Jacobi mejora el problema y reduce el trabajo del algoritmo.</p></article>
+        <article class="card insight-card"><span class="insight-number">C</span><h3>Lectura financiera</h3><p>El vector x expresa ajustes modelados, en miles de Bs, respecto a la línea base didáctica. Permite discutir prioridades entre iniciativas; no representa partidas aprobadas ni una recomendación para la UMSA.</p></article>
+      </div>
+      <article class="card results-narrative" aria-live="polite">
+        <div class="card-title-row">
+          <div><h3>Lectura del escenario actual</h3><p id="interpretationScenario" class="muted">Los resultados aparecerán al calcular el primer escenario.</p></div>
+          <span id="interpretationBadge" class="tag">ANÁLISIS</span>
+        </div>
+        <p id="interpretationLead" class="interpretation-lead">Carga un escenario para ver cómo se interpretan conjuntamente su solución, residuo, condicionamiento e iteraciones.</p>
+        <div class="interpretation-grid">
+          <div><strong>Precisión alcanzada</strong><p id="interpretationAccuracy">El residuo y los errores se actualizarán con el cálculo.</p></div>
+          <div><strong>Respuesta del algoritmo</strong><p id="interpretationConvergence">Se compararán las iteraciones de GC y GCP.</p></div>
+          <div><strong>Lectura financiera</strong><p id="interpretationFinance">Los valores de x son ajustes ilustrativos del escenario activo.</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section references" id="fuentes">
+      <p class="eyebrow">06 / REFERENCIAS</p><h2>Fuentes y alcance.</h2>
+      <ol>
+        <li>Universidad Mayor de San Andrés. <em>Plan Estratégico Institucional UMSA 2021–2025</em>, Cuadro 21: evolución de techos presupuestarios asignados por el MEFP, en bolivianos. <a href="https://www.umsa.bo/documents/1811251/2186074/PEI_UMSA_2019-2025_02-03-2020-ajustado.pdf/6f9e84af-82e2-447b-d8f3-54241c585f6d" target="_blank" rel="noopener">Abrir documento ↗</a></li>
+        <li>Departamento de Tecnologías de Información y Comunicación de la UMSA. Información de infraestructura, conectividad y seguridad informática. <a href="https://www.umsa.bo/es/web/dtic/servicios" target="_blank" rel="noopener">Abrir página ↗</a></li>
+        <li>Suñagua S., P. (2020). <em>Método de Gradientes Conjugados Precondicionado</em>. Revista Boliviana de Matemática, UMSA, 04, 2–7.</li>
+        <li>Golub, G. H. y Van Loan, C. F. (2013). <em>Matrix Computations</em>, 4.ª ed. Johns Hopkins University Press.</li>
+        <li>Saad, Y. (2003). <em>Iterative Methods for Sparse Linear Systems</em>, 2.ª ed. SIAM.</li>
+      </ol>
+    </section>
+  </main>
+  <footer><span>Simulador académico · Ingeniería de Sistemas</span></footer>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
